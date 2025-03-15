@@ -30,5 +30,5 @@ body {
 }
 
 .sidebar a:hover {
-  background-color: #21867a;
+  background-color:rgba(255, 255, 255, 0.3);
 }

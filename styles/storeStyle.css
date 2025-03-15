@@ -1,11 +1,11 @@
 body {
-    background:  #FDB7EA; /* Soft pink gradient */
+    background:  #FDB7EA; 
     height: 100vh;
     overflow-x: hidden;
     position: relative;
 }
 
-/* Center the store title and balance */
+
 header {
     display: flex;
     justify-content: space-between; 
@@ -20,7 +20,7 @@ header {
     text-align: center;
     color: white;
     text-shadow: 5px 5px 15px rgba(255, 255, 255, 0.8);
-    flex-grow: 1; /* Pushes balance to right */
+    flex-grow: 1; 
 }
 
 .balance-container {
@@ -34,7 +34,6 @@ header {
     color: #2a9d8f;
 }
 
-/* Menu container styles */
 .menu-container {
     display: flex;
     flex-wrap: wrap;
@@ -44,7 +43,7 @@ header {
     text-align: center;
 }
 
-/* Style each menu item */
+
 .menu-item {
     border: 2px solid #0b0b0b;
     padding: 15px;
@@ -55,12 +54,12 @@ header {
     cursor: pointer;
 }
 
-/* Click effect */
+
 .menu-item:active img {
     transform: scale(0.9);
 }
 
-/* Shopping cart styles */
+
 #cart-container {
     margin-top: 30px;
     padding: 15px;
@@ -92,7 +91,6 @@ header {
 #checkout:hover {
     background-color: #21867a;
 }
-/* Featured Item */
 .featured {
     display: flex;
     justify-content: center;
@@ -108,56 +106,12 @@ header {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Sidebar Styling */
-.sidebar {
-    width: 251px;
-    background-color: #f589d8;
-    padding-top: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .sidebar h2 {
-    color: white;
-    text-align: center;
-  }
-  
-  .sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 15px 20px;
-    font-size: 18px;
-    transition: .3s;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .sidebar a:hover {
-    background-color: #21867a;
-  }
-  
-  .main-container {
-    display: flex;
-    flex-grow: 1;
-  }
-  
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-    text-align: center;
-  }
-
-
-/* Sidebar Styling */
 .sidebar {
     height: 100%;
     width: 200px;
     position: fixed;
     top: 0;
-    left: -200px; /* Initially hidden */
+    left: -200px; 
     background-color: #f589d8;
     padding-top: 60px;
     transition: 0.3s ease-in-out;
@@ -176,7 +130,7 @@ header {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Menu Button */
+
 #menu-toggle {
     position: absolute;
     top: 10px;
@@ -187,7 +141,6 @@ header {
     cursor: pointer;
 }
 
-/* When Sidebar is Active */
 .sidebar-active {
     left: 0 !important;
 }

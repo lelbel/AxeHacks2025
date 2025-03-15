@@ -5,10 +5,14 @@ const menuItems = [
     { name: "Cat", price: 3.49, image: "https://via.placeholder.com/100", category: "pets" },
     { name: "Dog", price: 3.49, image: "https://via.placeholder.com/100", category: "pets" },
     { name: "Window", price: 10.49, image: "https://via.placeholder.com/100", category: "home_improvement" },
-    { name: "Plant", price: 2.49, image: "https://via.placeholder.com/100", category: "home_improvement" }
+    { name: "Plant", price: 2.49, image: "https://via.placeholder.com/100", category: "home_improvement" },
+    { name: "Sofa", price: 12.99, image: "https://via.placeholder.com/100", category: "furniture" },
+    { name: "Bookshelf", price: 9.99, image: "https://via.placeholder.com/100", category: "furniture" },
+    { name: "Dog Bowl", price: 2.49, image: "https://via.placeholder.com/100", category: "pets" },
+    { name: "Blanket", price: 5.99, image: "https://via.placeholder.com/100", category: "rugs" }
 ];
 
-let balance = 20.00;
+let balance = 0.00;
 let cart = [];
 let currentItemIndex = 0;
 
@@ -17,10 +21,10 @@ function updateBalance() {
     document.getElementById("balance").textContent = balance.toFixed(2);
 }
 
-// Render menu based on selected category
+// items per category
 function displayMenu(filteredCategory = "all") {
     const menuContainer = document.getElementById("menu");
-    menuContainer.innerHTML = ""; // Clear menu before adding new items
+    menuContainer.innerHTML = "";
 
     menuItems.forEach(item => {
         if (filteredCategory === "all" || item.category === filteredCategory) {
@@ -42,7 +46,7 @@ function displayMenu(filteredCategory = "all") {
     });
 }
 
-// Handle purchasing an item
+// item purchase
 function purchaseItem(item) {
     if (balance >= item.price) {
         balance -= item.price;
@@ -54,7 +58,7 @@ function purchaseItem(item) {
     }
 }
 
-// Update shopping cart
+// Update cart 
 function updateCart() {
     const cartContainer = document.getElementById("cart");
     cartContainer.innerHTML = "";
@@ -81,7 +85,7 @@ function removeFromCart(index, price) {
     updateCart();
 }
 
-// Checkout functionality
+// Checkout 
 document.getElementById("checkout").addEventListener("click", () => {
     if (cart.length === 0) {
         alert("Your cart is empty!");
@@ -92,13 +96,13 @@ document.getElementById("checkout").addEventListener("click", () => {
     }
 });
 
-// Dropdown s
+// side bar drop down
 document.getElementById("category-filter").addEventListener("change", (event) => {
     const selectedCategory = event.target.value;
     displayMenu(selectedCategory);
 });
 
-// Change the featured image every 3 seconds
+// Featured item change every 3 sec
 function changeFeaturedImage() {
     currentItemIndex = (currentItemIndex + 1) % menuItems.length;
     const featuredImage = document.getElementById("featuredImage");
@@ -112,29 +116,46 @@ function changeFeaturedImage() {
 
 setInterval(changeFeaturedImage, 3000);
 
-// Initialize store
+// ** TASKBAR CONNECTION ** (Add money when tasks are completed, DO THIS AFTER TASK IS FINISHED)
+function completeTask(taskReward) {
+    balance += taskReward; 
+    updateBalance(); 
+}
+
+// connect to task checkboxes
 document.addEventListener("DOMContentLoaded", () => {
     displayMenu();  
     updateBalance();
+
+    document.querySelectorAll(".task-checkbox").forEach((checkbox) => { 
+        checkbox.addEventListener("change", function() {
+            if (this.checked) {
+                completeTask(5.00); 
+            }
+        });
+    });
 });
+
+// Sidebar 
 document.addEventListener("DOMContentLoaded", function() {
     const sidebar = document.getElementById("sidebar");
     const menuToggle = document.getElementById("menu-toggle");
 
-    // Toggle sidebar when menu button is clicked
     menuToggle.addEventListener("click", function(event) {
         if (sidebar.style.left === "0px") {
             sidebar.style.left = "-200px"; // Hide
         } else {
             sidebar.style.left = "0px"; // Show
         }
-        event.stopPropagation(); // Prevent click from reaching document
+        event.stopPropagation(); 
     });
 
-    // Hide sidebar when clicking outside of it
-    document.addEventListener("click", function(event) {
+    function closeSidebar(event) {
         if (sidebar.style.left === "0px" && !sidebar.contains(event.target) && event.target !== menuToggle) {
             sidebar.style.left = "-200px"; // Hide sidebar
         }
-    });
+    }
+
+    document.addEventListener("click", closeSidebar);
+    document.addEventListener("touchstart", closeSidebar);
 });
