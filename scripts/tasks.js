@@ -1,4 +1,5 @@
 class Task {
+    //constructor for tasks
     constructor(name, date, points){
         this._name = name;
         this._date = new Date(date);
@@ -6,7 +7,7 @@ class Task {
         this._status = false;
 
     }
-
+//getters and setters for task attributes
     get taskName(){
         return this._name;
     }
@@ -28,29 +29,35 @@ class Task {
         this._points = value;
     }
 }
+//separate class to manage tasks in task list (array)
 class TaskManager{
     constructor(){
         this.taskList = [];
     }
 
+//add another task to list
     addTask(name, date, points){
         let task = new Task(name, date, points);
         this.taskList.push(task);
         this.displayTasks();
     }
     
+//delete task from list
     deleteTask(){
         
     }
 
+//display status of task
     displayStatus(){
 
     }
 
+//change the status of the task
     toggleStatus(){
 
     }
 
+//display all tasks in task list
     displayTasks(){
 
     }
