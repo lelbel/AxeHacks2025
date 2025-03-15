@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffe6f2; 
+            margin: 0;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+        
+        .calendar-container {
+            width: 95%;
+            max-width: 1000px;
+            background: #ffb6c1; 
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3); 
+            text-align: center;
+        }
+
+        .task-form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: #ffc0cb; 
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(255, 20, 147, 0.3); 
+        }
+
+        .task-form input, .task-form select, .task-form button {
+            padding: 8px;
+            font-size: 0.9em;
+            border: 1px solid #ff69b4; 
+            border-radius: 5px;
+            background: #ffe4e1; 
+            color: #d63384; 
+        }
+
+        .task-form button {
+            background-color: #ff69b4; 
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .task-form button:hover {
+            background-color: #ff1493; 
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .calendar-header button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .calendar-header button:hover {
+            background: #ff1493;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+            margin-top: 10px;
+        }
+
+        .day {
+            padding: 10px;
+            border: 1px solid #ff69b4; 
+            background: #ffd1dc;
+            text-align: center;
+            font-size: 0.9em;
+            min-height: 70px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .day.header {
+            background: #ff1493; 
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .task-item {
+            background: #ff85a2; 
+            padding: 3px;
+            margin-top: 3px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <h1>Task Manager</h1>
+        
+        <form id="taskForm" class="task-form">
+            <input type="text" id="title" placeholder="Task Title" required>
+            <select id="status">
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+            <input type="date" id="dueDate" required>
+            <input type="number" id="points" min="1" placeholder="Points" required>
+            <button type="submit">Add Task</button>
+            <button type="button" id="viewTasks">View Tasks</button>  <!-- NEW BUTTON -->
+        </form>
+
+        <!-- Month Navigation -->
+        <div class="calendar-header">
+            <button id="prevMonth">← Prev</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth">Next →</button>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+    </div>
+
+    <script>
+        document.getElementById("viewTasks").addEventListener("click", function() {
+            window.location.href = "/tasks.html";  // Redirects to the tasks page
+        });
+
+        let currentYear, currentMonth;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const today = new Date();
+            currentYear = today.getFullYear();
+            currentMonth = today.getMonth();
+        
+            generateCalendar(currentYear, currentMonth);
+            updateMonthYear(currentYear, currentMonth);
+            await fetchTasks();
+        
+            document.getElementById("prevMonth").addEventListener("click", () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+            });
+        
+            document.getElementById("nextMonth").addEventListener("click", () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+            });
+        });
+
+        async function fetchTasks() {
+            try {
+                const response = await fetch("http://localhost:5000/tasks");
+                const tasks = await response.json();
+        
+                tasks.forEach(task => {
+                    addTaskToCalendar(task);
+                });
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+            }
+        }
+
+        document.getElementById("taskForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById("title").value;
+            const status = document.getElementById("status").value;
+            const dueDate = document.getElementById("dueDate").value;
+            const points = document.getElementById("points").value;
+
+            const taskData = { title, status, dueDate, points };
+
+            try {
+                const response = await fetch("http://localhost:5000/tasks", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(taskData)
+                });
+
+                if (!response.ok) throw new Error("Failed to save task");
+
+                const newTask = await response.json();
+                addTaskToCalendar(newTask);
+            } catch (error) {
+                console.error("Error adding task:", error);
+            }
+
+            document.getElementById("taskForm").reset();
+        });
+
+        function addTaskToCalendar(task) {
+            const dayElement = document.querySelector(`.day[data-date="${task.dueDate}"]`);
+            if (dayElement) {
+                const taskDiv = document.createElement("div");
+                taskDiv.classList.add("task-item");
+                taskDiv.textContent = `${task.title} (${task.status}) - ${task.points} pts`;
+                dayElement.appendChild(taskDiv);
+            }
+        }
+
+        function generateCalendar(year, month) {
+            const calendarContainer = document.getElementById("calendar");
+            calendarContainer.innerHTML = `
+                <div class="day header">Sun</div>
+                <div class="day header">Mon</div>
+                <div class="day header">Tue</div>
+                <div class="day header">Wed</div>
+                <div class="day header">Thu</div>
+                <div class="day header">Fri</div>
+                <div class="day header">Sat</div>
+            `;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                calendarContainer.appendChild(document.createElement("div")).classList.add("day");
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement("div");
+                dayElement.classList.add("day");
+                dayElement.textContent = day;
+                dayElement.setAttribute("data-date", `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`);
+                calendarContainer.appendChild(dayElement);
+            }
+        }
+    </script>
+
+</body>
+</html>
