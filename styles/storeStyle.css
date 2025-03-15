@@ -1,5 +1,5 @@
 body {
-    background:  #ffb6e7; /* Soft pink gradient */
+    background:  #FDB7EA; /* Soft pink gradient */
     height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -109,3 +109,43 @@ header {
 }
 
 
+/* Sidebar Styling */
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: -200px; /* Initially hidden */
+    background-color: #f589d8;
+    padding-top: 60px;
+    transition: 0.3s ease-in-out;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.sidebar a:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Menu Button */
+#menu-toggle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* When Sidebar is Active */
+.sidebar-active {
+    left: 0 !important;
+}

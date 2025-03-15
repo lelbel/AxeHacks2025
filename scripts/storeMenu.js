@@ -1,9 +1,11 @@
 const menuItems = [
-    { name: "Chairs", price: 5.99, image: "photos/chair.png", category: "furniture" },
+    { name: "Chairs", price: 5.99, image: "https://via.placeholder.com/100", category: "furniture" },
     { name: "Table", price: 8.99, image: "https://via.placeholder.com/100", category: "furniture" },
     { name: "Rug", price: 5.49, image: "https://via.placeholder.com/100", category: "rugs" },
     { name: "Cat", price: 3.49, image: "https://via.placeholder.com/100", category: "pets" },
-    { name: "Window", price: 10.49, image: "https://via.placeholder.com/100", category: "home_improvement" }
+    { name: "Dog", price: 3.49, image: "https://via.placeholder.com/100", category: "pets" },
+    { name: "Window", price: 10.49, image: "https://via.placeholder.com/100", category: "home_improvement" },
+    { name: "Plant", price: 2.49, image: "https://via.placeholder.com/100", category: "home_improvement" }
 ];
 
 let balance = 20.00;
@@ -114,4 +116,25 @@ setInterval(changeFeaturedImage, 3000);
 document.addEventListener("DOMContentLoaded", () => {
     displayMenu();  
     updateBalance();
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+
+    // Toggle sidebar when menu button is clicked
+    menuToggle.addEventListener("click", function(event) {
+        if (sidebar.style.left === "0px") {
+            sidebar.style.left = "-200px"; // Hide
+        } else {
+            sidebar.style.left = "0px"; // Show
+        }
+        event.stopPropagation(); // Prevent click from reaching document
+    });
+
+    // Hide sidebar when clicking outside of it
+    document.addEventListener("click", function(event) {
+        if (sidebar.style.left === "0px" && !sidebar.contains(event.target) && event.target !== menuToggle) {
+            sidebar.style.left = "-200px"; // Hide sidebar
+        }
+    });
 });
