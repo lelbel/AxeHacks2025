@@ -6,7 +6,6 @@
     <title>Task Manager </title>
     <link rel="stylesheet" href="/styles/style.css">
     <style>
-      
         body {
             background: linear-gradient(135deg, #FFC0CB, #FF69B4, #FF1493);
             font-family: "Comic Sans MS", "Arial", sans-serif;
@@ -38,103 +37,34 @@
             to { text-shadow: 0 0 20px white; }
         }
 
-        .task-item {
-            font-size: 1.5rem;
-            background: #FF85A2;
-            padding: 20px;
-            margin: 20px auto;
-            width: 70%;
-            max-width: 500px;
-            border-radius: 15px;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .task-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 20, 147, 0.8);
-        }
-
-        .task-item input, 
-        .task-item select {
-            font-size: 1rem;
-            width: 80%;
-            margin: 8px 0;
-            padding: 10px;
-            border: 2px solid white;
-            border-radius: 8px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            color: #FF1493;
-            font-weight: bold;
-            outline: none;
-            transition: all 0.3s;
-            display: block;
-        }
-
-        .task-item input:focus, 
-        .task-item select:focus {
-            background: white;
-            border-color: #FF1493;
-        }
-
-        .task-item button {
-            background: linear-gradient(to right, #FF69B4, #FF1493);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
+        h2 {
+            font-size: 2rem;
             margin-top: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .task-item button:hover {
-            background: #FF1493;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
         }
     </style>
 </head>
 <body>
-
     <h1>🎀 My Tasks 🎀</h1>
+    <h2>Completed Tasks: <span id="taskCounter">0</span></h2>
     <div id="taskContainer">
         <p>Loading tasks... 🌸</p>
     </div>
-
-    <!-- Sidebar Toggle Button -->
-    <button id="menu-toggle">☰</button>
-
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <a href="index.html">Home</a>
-        <a href="calendar.html">Calendar</a>
-        <a href="storeMenu.html">Store</a>
-        <a href="tasks.html">Tasks</a>
-    </div>
-
     <script>
+        function updateCounter() {
+            document.getElementById("taskCounter").textContent = localStorage.getItem("completedTasks") || 0;
+        }
+
         async function fetchTasks() {
             try {
                 const response = await fetch("http://localhost:5000/tasks");
                 const tasks = await response.json();
                 
                 const taskContainer = document.getElementById("taskContainer");
-                taskContainer.innerHTML = ""; // Clear loading text
+                taskContainer.innerHTML = "";
                 
                 tasks.forEach(task => {
                     addTaskToDOM(task);
                 });
-
             } catch (error) {
                 console.error("Error fetching tasks:", error);
                 document.getElementById("taskContainer").innerHTML = "<p>❌ Error loading tasks</p>";
@@ -143,7 +73,6 @@
 
         function addTaskToDOM(task) {
             const taskContainer = document.getElementById("taskContainer");
-
             const taskDiv = document.createElement("div");
             taskDiv.classList.add("task-item");
             taskDiv.setAttribute("data-id", task._id);
@@ -161,66 +90,27 @@
                 statusSelect.appendChild(option);
             });
 
-            const dueDateInput = document.createElement("input");
-            dueDateInput.type = "date";
-            dueDateInput.value = task.dueDate;
-
-            const pointsInput = document.createElement("input");
-            pointsInput.type = "number";
-            pointsInput.value = task.points;
-
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "❌ Delete";
-            deleteButton.addEventListener("click", async () => {
-                await deleteTask(task._id);
-                taskDiv.remove();
-            });
-
-            titleInput.addEventListener("change", () => updateTask(task._id, titleInput.value, statusSelect.value, dueDateInput.value, pointsInput.value));
             statusSelect.addEventListener("change", async () => {
                 if (statusSelect.value === "completed") {
+                    let completedTasks = parseInt(localStorage.getItem("completedTasks")) || 0;
+                    localStorage.setItem("completedTasks", ++completedTasks);
+                    updateCounter();
                     await deleteTask(task._id);
                     taskDiv.remove();
                 } else {
-                    updateTask(task._id, titleInput.value, statusSelect.value, dueDateInput.value, pointsInput.value);
+                    updateTask(task._id, titleInput.value, statusSelect.value);
                 }
             });
-            dueDateInput.addEventListener("change", () => updateTask(task._id, titleInput.value, statusSelect.value, dueDateInput.value, pointsInput.value));
-            pointsInput.addEventListener("change", () => updateTask(task._id, titleInput.value, statusSelect.value, dueDateInput.value, pointsInput.value));
 
             taskDiv.appendChild(titleInput);
             taskDiv.appendChild(statusSelect);
-            taskDiv.appendChild(dueDateInput);
-            taskDiv.appendChild(pointsInput);
-            taskDiv.appendChild(deleteButton);
-            
             taskContainer.appendChild(taskDiv);
         }
 
-        async function updateTask(id, title, status, dueDate, points) {
-            try {
-                await fetch(`http://localhost:5000/tasks/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ title, status, dueDate, points })
-                });
-            } catch (error) {
-                console.error("Error updating task:", error);
-            }
-        }
-
-        async function deleteTask(id) {
-            try {
-                await fetch(`http://localhost:5000/tasks/${id}`, {
-                    method: "DELETE"
-                });
-            } catch (error) {
-                console.error("Error deleting task:", error);
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", fetchTasks);
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchTasks();
+            updateCounter();
+        });
     </script>
-
 </body>
 </html>

@@ -13,6 +13,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/calendar", (req, res) => res.sendFile(path.join(__dirname, "public", "calendar.html")));
 app.get("/tasks-page", (req, res) => res.sendFile(path.join(__dirname, "public", "tasks.html")));
+app.get("/storeMenu", (req, res) => res.sendFile(path.join(__dirname, "public", "storeMenu.html")));
+
+
+
 
 mongoose.connect("mongodb+srv://admin:admin@cluster0.hs4hc.mongodb.net/axe_hacks", { 
     useNewUrlParser: true, 
