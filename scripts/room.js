@@ -13,7 +13,6 @@ export default class Room {
         this.counter = null;
     }
 
-
     //---------GETTERS---------
     // getter for room mat
     getMat() {
@@ -39,7 +38,7 @@ export default class Room {
         matImg.src = `/decorations/${this.getMat().getSprite()}`;
         matImg.alt = "Mat";
         matImg.id = "mat";
-        document.getElementById("room").append(matImg);
+        document.getElementById("room").appendChild(matImg);
     }
     
     showFlowerDisplay() {
@@ -118,7 +117,25 @@ const flowerDisplay = new Decoration("Flower Display", 5, "Flower Display", "flo
 const largeRug = new Decoration("Large Rug", 5, "Large Rug", "largeRug.png");
 const counter = new Decoration("Counter", 5, "Counter", "counter.png");
 
-room.addDecoration(welcomeMat);
-room.addDecoration(flowerDisplay);
-room.addDecoration(largeRug);
-room.addDecoration(counter)
+export function addDecoration(num) {
+    switch(num) {
+        case 1:
+            room.addDecoration(welcomeMat);
+            break;
+        
+        case 2:
+            room.addDecoration(flowerDisplay);
+            break;
+        
+        case 3:
+            room.addDecoration(largeRug);
+            break;
+
+        case 4:
+            room.addDecoration(counter);
+            break;
+        default:
+            console.log("Room complete");
+    }
+
+}
