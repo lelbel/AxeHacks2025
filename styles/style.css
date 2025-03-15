@@ -3,36 +3,44 @@
 /* Style for the entire webpage */
 body {
   font-family: Arial, sans-serif;
-  background-color: #ffffff;
+  background-color: #FDB7EA;
   margin: 0;
   padding: 0;
+  text-align: flex;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #f589d8;
+  padding-top: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.sidebar h2 {
+  color: white;
   text-align: center;
 }
 
-/* Styling for the Navigation Bar */
-nav {
-  background-color: #a557a5;
-  padding: 10px;
-}
-
-nav a {
+.sidebar a {
+  display: block;
   color: white;
   text-decoration: none;
-  padding: 10px 20px;
-  display: inline-block;
-}
-
-nav a:hover {
-  background-color: #633363;
-}
-
-/* Heading Style */
-h1 {
-  color: #a557a5;
-}
-
-/* Paragraph Styling */
-p {
-  color: #666;
+  padding: 15px 20px;
   font-size: 18px;
+  transition: .3s;
+}
+
+.sidebar a:hover {
+  background-color: #21867a;
+}
+
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  flex: 1;
+  text-align: center;
 }
