@@ -3,8 +3,10 @@ import Decoration from './decoration.js';
 // class that creates the room the user is decoration and tracks their customizations
 export default class Room {
     constructor() {
-        //list of all room objects
+        //list of all owned room objects
         this.ownedDecorations = [];
+
+        //list of current objects being displayed
         this.currentDecorations = [];
     }
 
@@ -20,14 +22,13 @@ export default class Room {
 
     //  update array of current decorations
     addOwnedDecoration(decoration) {
-        for (displayedDecoration in this.currentDecorations) {
-            if (displayedDecoration.decorType() == decoration.decorType()) {
-                currentDecorations[displayedDecoration] = decoration;
+        for (let i = 0; this.currentDecorations.length; i++) {
+            if (this.currentDecorations[i].getType() == decoration.getType()) {
+                this.currentDecorations[i] = decoration;
                 return;
             }
         }
-
-        this.current.push(decoration);
+        this.currentDecorations.push(decoration);
     }
 
     //  get array of current decorations
@@ -55,8 +56,9 @@ export default class Room {
 
 }
 
-
 //TESTING
 const room = new Room();
-//document.getElementById("test").innerHTML = room.getOwnedDecorations;
 const table = new Decoration("table", 10, "table", "img");
+
+room.addOwnedDecoration(table);
+document.getElementById("test").innerHTML = room.getOwnedDecorations();

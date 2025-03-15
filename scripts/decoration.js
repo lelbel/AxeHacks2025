@@ -1,5 +1,3 @@
-import Room from './room.js';
-
 //  class that creates decoration objects
 export default class Decoration {
     constructor(name, price, type, sprite) {
@@ -29,7 +27,3 @@ export default class Decoration {
         return this.sprite;
     }
 }
-
-//  TESTING
-//const desk = new Decoration ("Cool Desk", 10, "Desk", "desk.png");
-//document.getElementById("test").innerHTML = "test name: " + desk.getName() + desk.getPrice() + desk.getType();
