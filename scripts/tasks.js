@@ -63,3 +63,32 @@ class TaskManager{
     }
     
 }
+
+// side bar drop down
+document.getElementById("category-filter").addEventListener("change", (event) => {
+    const selectedCategory = event.target.value;
+    displayMenu(selectedCategory);
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+
+    menuToggle.addEventListener("click", function(event) {
+        if (sidebar.style.left === "0px") {
+            sidebar.style.left = "-200px"; // Hide
+        } else {
+            sidebar.style.left = "0px"; // Show
+        }
+        event.stopPropagation(); 
+    });
+
+    function closeSidebar(event) {
+        if (sidebar.style.left === "0px" && !sidebar.contains(event.target) && event.target !== menuToggle) {
+            sidebar.style.left = "-200px"; // Hide sidebar
+        }
+    }
+
+    document.addEventListener("click", closeSidebar);
+    document.addEventListener("touchstart", closeSidebar);
+});
