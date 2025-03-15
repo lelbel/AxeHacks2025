@@ -44,6 +44,15 @@
     </style>
 </head>
 <body>
+    <header>
+        <!-- Sidebar -->
+        <div class="sidebar static-sidebar">
+            <a href="index.html">Home</a>
+            <a href="calendar.html">Calender</a>
+            <a href="storeMenu.html">Store</a>
+            <a href="tasks.html">Tasks</a>
+         </div>
+    </header>
     <h1>🎀 My Tasks 🎀</h1>
     <h2>Completed Tasks: <span id="taskCounter">0</span></h2>
     <div id="taskContainer">
@@ -97,6 +106,7 @@
                     updateCounter();
                     await deleteTask(task._id);
                     taskDiv.remove();
+                    addDecoration(completedTasks);
                 } else {
                     updateTask(task._id, titleInput.value, statusSelect.value);
                 }

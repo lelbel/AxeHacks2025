@@ -106,7 +106,6 @@ document.getElementById("category-filter").addEventListener("change", (event) =>
 function changeFeaturedImage() {
     currentItemIndex = (currentItemIndex + 1) % menuItems.length;
     const featuredImage = document.getElementById("featuredImage");
-    featuredImage.style.opacity = 0;
 
     setTimeout(() => {
         featuredImage.src = menuItems[currentItemIndex].image;
