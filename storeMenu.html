@@ -9,15 +9,25 @@
 <body>
     <!-- Store Header with Balance Display -->
     <header>
-        <h1>Store</h1>
-    </header>
-
-    <header_1>
+        <h1 class="store-title">Store</h1>
         <div class="balance-container">
             <strong>Balance: €<span id="balance">20.00</span></strong>
         </div>
-    </header_1>
-    
+    </header>
+
+    <!-- Featured Item Section -->
+    <section class="featured">
+        <img id="featuredImage" src="https://via.placeholder.com/100" alt="Featured Item">
+    </section>
+
+    <label for="category-filter">Filter by Location:</label>
+    <select id="category-filter">
+        <option value="all">All</option>
+        <option value="furniture">furniture</option>
+        <option value="rugs">rugs</option>
+        <option value="home_improvement">home_improvement</option>
+        <option value="pets">pets</option>
+    </select>
 
     <!-- Menu Items -->
     <div id="menu" class="menu-container"></div>
