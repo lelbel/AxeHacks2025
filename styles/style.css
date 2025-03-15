@@ -32,3 +32,53 @@ body {
 .sidebar a:hover {
   background-color:rgba(255, 255, 255, 0.3);
 }
+
+
+
+
+#room {
+  position: absolute;
+}
+
+#room-background {
+  position: absolute;
+  z-index: 1;
+  transform: scale(1);
+  image-rendering: crisp-edges;
+}
+
+#mat {
+  position: absolute;
+  top: 464px;
+  left: 337px;
+  z-index: 2;
+  transform: scale(1);
+  image-rendering: crisp-edges;
+}
+
+#flower-display {
+  position: absolute;
+  top: 345px;
+  left: 572px;
+  z-index: 2;
+  transform: scale(1);
+  image-rendering: crisp-edges;
+}
+
+#large-rug {
+  position: absolute;
+  top: 190px;
+  left: 90px;
+  z-index: 2;
+  transform: scale(1);
+  image-rendering: crisp-edges;
+}
+
+#counter {
+  position: absolute;
+  top: 110px;
+  left: 260px;
+  z-index: 2;
+  transform: scale(1);
+  image-rendering: crisp-edges;
+}
