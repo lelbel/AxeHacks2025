@@ -3,16 +3,20 @@ import Decoration from './decoration.js';
 // class that creates the room the user is decoration and tracks their customizations
 export default class Room {
     constructor() {
-        //list of all owned room objects
+        //  list of all owned room objects
         this.ownedDecorations = [];
 
-        //list of current objects being displayed
-        this.currentDecorations = [];
+        //  current room decoration
+        this.mat;
+        this.flowerDisplay;
     }
 
     //  add a decoration to the array of owned decorations
     addOwnedDecoration(decoration) {
         this.ownedDecorations.push(decoration);
+
+        //set added decoration as current decoration
+        this.setDecoration(decoration);
     }
 
     //  get array of owned decorations
@@ -20,45 +24,48 @@ export default class Room {
         return this.ownedDecorations;
     }
 
-    //  update array of current decorations
-    addOwnedDecoration(decoration) {
-        for (let i = 0; this.currentDecorations.length; i++) {
-            if (this.currentDecorations[i].getType() == decoration.getType()) {
-                this.currentDecorations[i] = decoration;
-                return;
-            }
-        }
-        this.currentDecorations.push(decoration);
-    }
+    //  add or swap out a decoration in the room
+    setDecoration(decoration) {
+        switch(decoration.getType()) {
+            case "Mat":
+                this.mat = decoration;
+                break;
 
-    //  get array of current decorations
-    getOwnedDecorations() {
-        return this.ownedDecorations;
-    }
-
-    //  iterate through a list of object positions and determine where the object should go
-    placeDecoration(decoration) {
-        //  if decoration is window
-        if (decoration.type == "Window") {
-            this.window = decoration;
+            case "Flower Display":
+                this.flowerDisplay = decoration;
+                break;
+            
+            default:
+                console.log("decoration type not found");
         }
     }
 
-    //setter for room window
-    setRoomWindow(window) {
-        this.window = window;
+    //---------GETTERS AND SETTERS---------
+    //  getter for room mat
+    getMat() {
+        return this.mat.getSprite();
     }
 
-    //getter for room window
-    getRoomWindow() {
-        return this.window;
+    getFlowerDisplay() {
+        return this.flowerDisplay;
     }
-
 }
 
 //TESTING
 const room = new Room();
-const table = new Decoration("table", 10, "table", "img");
+const welcomeMatHello = new Decoration("Welcome Mat Hello", 10, "Mat", "welcomeMatHello.png");
+const welcomeMatBlank = new Decoration("Welcome Mat Blank", 5, "Mat", "welcomeMatBlank.png");
+const flowerDisplay = new Decoration("Flower Display", 5, "Flower Display", "flowerDisplay.png");
 
-room.addOwnedDecoration(table);
-document.getElementById("test").innerHTML = room.getOwnedDecorations();
+room.addOwnedDecoration(welcomeMatHello);
+room.addOwnedDecoration(welcomeMatBlank);
+room.addOwnedDecoration(flowerDisplay);
+
+document.getElementById("test").innerHTML = (room.getOwnedDecorations()[0].getName());
+
+document.getElementById("room").innerHTML = 
+    `
+    <img src="/decorations/background.png" alt="Room Background" id="room-background">
+    <img src="/decorations/${room.getMat()}" id="welcome-mat"/>
+    <img src="/decorations/${room.getFlowerDisplay()}" id="welcome-mat"/>
+    `

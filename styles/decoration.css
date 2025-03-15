@@ -1,0 +1,16 @@
+#room-background {
+    position: absolute;
+    z-index: 1;
+}
+
+#welcome-mat {
+    position: absolute;
+    top: 345px;
+    left: 176px;
+    z-index: 2;
+}
+
+#flower-display {
+    position: absolute;
+    z-index: 2;
+}
